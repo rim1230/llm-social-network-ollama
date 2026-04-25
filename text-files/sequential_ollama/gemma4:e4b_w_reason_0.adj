@@ -1,0 +1,8 @@
+#generate_networks.py sequential --persona_fn personas_5.json --model ollama/gemma4:e4b --num_networks 1 --include_reason --verbose
+# GMT Thu Apr 23 06:53:25 2026
+# 
+2 1 3 0
+0 4
+1 3 4
+3
+4

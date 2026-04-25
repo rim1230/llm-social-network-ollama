@@ -2,7 +2,7 @@
 This repo contains code and results for the paper ["LLMs generate structurally realistic social networks but overestimate political homophily"](https://arxiv.org/abs/2408.16629), by Serina Chang*, Alicja Chaszczewicz*, Emma Wang, Maya Josifovska, Emma Pierson, and Jure Leskovec (ICWSM 2025).
 
 ## Prerequisites 
-To run OpenAI models, you will need an OpenAI API key. To run Llama, Gemma, or other open-source models, you will need a Llama API key. See how API keys are fetched from `api-key.txt` in `constants_and_utils.py`.
+To run OpenAI models, you will need an OpenAI API key. To run hosted Llama, Gemma, or other open-source models, you will need a Llama API key. To run a local Ollama model, use a model name prefixed with `ollama/` (for example `--model ollama/llama2`). See how API keys are fetched from `api-key.txt` in `constants_and_utils.py`.
 
 We used Python 3.10 in our experiments, see package requirements in `requirements.txt`.
 
@@ -27,6 +27,8 @@ To generate networks, run something like the following command.
 ```python generate_networks.py global --model gpt-3.5-turbo --num_networks 30```
 
 This will generate 30 networks using the Global method, using GPT-3.5 Turbo. The networks will be saved as adjacency lists as `global_gpt-3.5-turbo_SEED.adj`, for SEED from 0 to 29, under `PATH_TO_TEXT_FILES` (defined in `constants_and_utils.py`). The visualized network is also saved under `PATH_TO_SAVED_PLOTS` (defined in `plotting.py`) and the summary of the costs (number of tokens, number of tries, time duration) is saved as `cost_stats_s0-29.csv` under `PATH_TO_STATS_FILES/global_gpt-3.5-turbo` (defined in `constants_and_utils.py`).
+
+For local Ollama, use a model name like `--model ollama/llama2` instead of a hosted API model name.
 
 You can vary which LLM to use with `--model` and how many networks are generated with `--num_networks`. Other important arguments include `--persona_fn` (which file to get personas from) and `--include_interests` (whether to include interests, which need to be included in the persona file if so). See `parse_args()` in `generate_networks.py` for a full list of arguments.
 

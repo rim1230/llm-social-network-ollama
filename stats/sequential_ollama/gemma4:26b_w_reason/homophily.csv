@@ -1,0 +1,11 @@
+graph_nr,demo,_metric_value,save_name,metric_name
+0.0,gender,0.9995702334387423,sequential_ollama/gemma4:26b_w_reason,same_ratio
+0.0,race/ethnicity,1.0283896010110127,sequential_ollama/gemma4:26b_w_reason,same_ratio
+0.0,age,1.0726087451947008,sequential_ollama/gemma4:26b_w_reason,same_ratio
+0.0,religion,1.0226834138810579,sequential_ollama/gemma4:26b_w_reason,same_ratio
+0.0,political affiliation,2.016926414091697,sequential_ollama/gemma4:26b_w_reason,same_ratio
+0.0,gender,1.000413925806596,sequential_ollama/gemma4:26b_w_reason,cross_ratio
+0.0,race/ethnicity,0.9744713665327327,sequential_ollama/gemma4:26b_w_reason,cross_ratio
+0.0,age,0.9393551339699389,sequential_ollama/gemma4:26b_w_reason,cross_ratio
+0.0,religion,0.9883358465086278,sequential_ollama/gemma4:26b_w_reason,cross_ratio
+0.0,political affiliation,0.02055645053027252,sequential_ollama/gemma4:26b_w_reason,cross_ratio

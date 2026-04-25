@@ -19,12 +19,19 @@ SHOW_PLOTS = False
 
 # os.system('source ~/.bash-profile')
 # api_key = os.getenv("OPENAI_API_KEY")
-with open('api-key.txt', 'r') as f:
-    lines = f.readlines()
-    openai_key = lines[0].strip()
-    assert len(openai_key) >= 10
-    llama_key = lines[1].strip()
-    assert len(llama_key) >= 10
+
+openai_key = ""  
+llama_key = "" 
+
+try:
+    with open('api-key.txt', 'r') as f:
+        lines = f.readlines()
+        openai_key = lines[0].strip()
+        assert len(openai_key) >= 10
+        llama_key = lines[1].strip()
+        assert len(llama_key) >= 10
+except:  
+    pass
 
 ##########################################
 # functions to draw and save networks
@@ -40,6 +47,7 @@ def draw_and_save_network_plot(G, save_prefix):
     axis.set_ylim([1.1*y for y in axis.get_ylim()])
     plt.tight_layout()
     fig_path = os.path.join(plotting.PATH_TO_SAVED_PLOTS, f'{save_prefix}.png')
+    os.makedirs(os.path.dirname(fig_path), exist_ok=True)
     print('Saving network drawing in ', fig_path)
     plt.savefig(fig_path)
     plt.close()
@@ -54,6 +62,7 @@ def draw_and_save_network_plot_no_labels(G, save_prefix):
     nx.draw_networkx(G, pos=nx.spring_layout(G, seed=0, k=2*1/np.sqrt(len(G.nodes()))), with_labels=False, node_size=15, width=0.1)
     plt.axis("off")
     fig_path = os.path.join(plotting.PATH_TO_SAVED_PLOTS, f'{save_prefix}.png')
+    os.makedirs(os.path.dirname(fig_path), exist_ok=True)
     plt.savefig(fig_path)
     plt.close()
 
@@ -62,6 +71,7 @@ def save_network(G, save_prefix):
     Save network as adjlist.
     """
     graph_path = os.path.join(PATH_TO_TEXT_FILES, f'{save_prefix}.adj')
+    os.makedirs(os.path.dirname(graph_path), exist_ok=True)  
     print('Saving adjlist in ', graph_path)
     nx.write_adjlist(G, graph_path)
 
@@ -103,6 +113,7 @@ def combine_plots(folders, plot_names):
         plt.tight_layout()
         # save combined plot
         fig_path = os.path.join(os.path.join(plotting.PATH_TO_SAVED_PLOTS), f'{plot_name}_combined_plot.png')
+        os.makedirs(os.path.dirname(fig_path), exist_ok=True)
         # save plot
         print('Saving combined plot in ', fig_path)
         plt.savefig(fig_path)
@@ -144,8 +155,16 @@ def get_llm_response(model, messages, savename=None, temp=DEFAULT_TEMPERATURE, v
     """
     Call OpenAI API, check for finish reason; if all looks good, return response.
     """
-    if 'gpt' in model:
-        client = OpenAI(api_key=openai_key)
+    if 'ollama' in model.lower():  
+        # Ollama - get rid of the prefix  
+        actual_model = model.replace('ollama/', '')  
+        client = OpenAI(  
+            base_url="http://localhost:11434/v1",  
+            api_key="ollama"  
+        )  
+        model = actual_model
+    elif 'gpt' in model:  
+        client = OpenAI(api_key=openai_key)  
     else:
         client = OpenAI(api_key=llama_key, base_url = "https://api.llama-api.com")
  

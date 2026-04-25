@@ -6,6 +6,8 @@ import seaborn as sns
 import matplotlib.ticker as ticker
 import pandas as pd
 
+from constants_and_utils import *
+
 # set paper context, font scale 2, white background
 sns.set_theme(context='paper', style='white', palette='pastel', font='sans-serif', font_scale=1.5)
 # set default figure size
@@ -408,7 +410,7 @@ def plot_edges(num_edges, save_name):
     if not os.path.exists(os.path.join(PATH_TO_SAVED_PLOTS, f'{save_name}')):
         os.makedirs(os.path.join(PATH_TO_SAVED_PLOTS, f'{save_name}'))
 
-    sns.boxplot(x=num_edges, whis=[0, 100], palette='pastel')
+    sns.boxplot(x=num_edges, whis=[0, 100])
     sns.stripplot(x=num_edges, size=4, color=".3")
     plt.xlabel('Num edges')
     if SHOW_PLOTS:

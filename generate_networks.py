@@ -60,8 +60,13 @@ def get_system_prompt(method, personas, demos_to_include, curr_pid=None, G=None,
             prompt += f'Choose {num_choices} {pp}. '
         if include_reason:
             prompt += 'Provide a list of *YOUR* friends and a short reason for why you are befriending them, in the format:\nID, reason\nID, reason\n...\n\n'
+            prompt += 'IMPORTANT: Respond with ONLY the ID,reason pairs. Do not include any introductory text, explanations, or closing remarks. '
+            prompt += 'Your entire response should consist solely of lines in the format "ID, reason". Start immediately with the first ID.\n\n'
         else:
             prompt += 'Provide a list of *YOUR* friends in the format ID, ID, ID, etc. ' 
+            prompt += 'CRITICAL: Respond with ONLY numbers and commas. '  
+            prompt += 'Do not include explanations, names, periods, or any other text. '  
+            prompt += 'Your entire response must be a single line like: 28,11,22,32 '
         prompt += prompt_extra
     
     elif method == 'iterative-add':
@@ -171,9 +176,10 @@ def update_graph_from_response(method, response, G, curr_pid=None, include_reaso
         new_edges = []
         if include_reason:
             for line in lines:
-                pid, reason = line.strip('.').split(',', 1)
-                new_edges.append((curr_pid, pid.strip()))
-                reasons[pid] = reason.strip()
+                if ',' in line:
+                    pid, reason = line.strip('.').split(',', 1)
+                    new_edges.append((curr_pid, pid.strip()))
+                    reasons[pid] = reason.strip()
         else:
             assert len(lines) == 1, f'Response should not be more than one line'
             line = lines[0].replace(',', ' ').replace('.', ' ')
